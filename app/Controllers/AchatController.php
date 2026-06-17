@@ -26,4 +26,8 @@ class AchatController extends BaseController
         
         return view('saisie');
     }
+    public function saisie() {
+        return view('saisie');
+    }
+
 }

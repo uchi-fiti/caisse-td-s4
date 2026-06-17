@@ -45,8 +45,8 @@
         <div class="sidebar-user d-flex align-items-center gap-2">
           <div class="user-avatar"><i class="bi bi-person-fill"></i></div>
           <div>
-            <div class="user-name" data-user-name>—</div>
-            <div class="user-role" data-user-role>—</div>
+<div class="user-name" data-user-name><?= session()->get('isLoggedIn') ? session()->get('user_nom') : '—'?></div>
+            <div class="user-role" data-user-role><?= session()->get('isLoggedIn') ? session()->get('identifiant') : '—'?></div>
           </div>
         </div>
 
@@ -57,7 +57,7 @@
         </div>
 
         <nav class="sidebar-nav nav flex-column">
-          <!-- <a href="accueil.html" class="nav-link"><i class="bi bi-house-door-fill"></i> Accueil</a> -->
+          <a href="<?= site_url('caisse/choix') ?>" class="nav-link"><i class="bi bi-house-door-fill"></i> Accueil</a>
           <a href="#" class="nav-link active"><i class="bi bi-cart-plus-fill"></i> Saisie des achats</a>
         </nav>
 
