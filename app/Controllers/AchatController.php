@@ -10,8 +10,17 @@ class AchatController extends BaseController
     {
         $data = $this->request->getPost();
         $caisseName = $data['nomCaisse'];
-        $caisse ;
+        $caisse = getCaisseByName($name);
+
+        if($caisse){
+            session()->set([
+                'caisse_id' => $caisse['id'],
+                'caisse_nom' => $caisse['nom']
+            ]);
+        }else{
+            return redirect()->to('/caisse/choix');
+        }
         
-        return view('page', [ 'caisse' => $caisse ]);
+        return view('page');
     }
 }

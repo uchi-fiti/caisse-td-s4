@@ -10,4 +10,8 @@ class CaisseModel extends Model
     protected $primaryKey    = 'id';
 
     protected $allowedFields = ['nom'];
+
+    public function getCaisseByName($name){
+        return $this->where('nom', $name)->first();
+    }
 }
