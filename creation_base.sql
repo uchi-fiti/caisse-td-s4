@@ -33,6 +33,7 @@ CREATE TABLE achat (
     idProduit  INTEGER NOT NULL,
     idCaisse   INTEGER NOT NULL,
     dateAchat  TEXT NOT NULL,
+    qtt INTEGER NOT NULL DEFAULT 1,
     FOREIGN KEY (idProduit) REFERENCES produit(id),
     FOREIGN KEY (idCaisse)  REFERENCES caisse(id)
 );

@@ -9,5 +9,5 @@ class AchatModel extends Model
     protected $table         = 'achat';
     protected $primaryKey    = 'id';
 
-    protected $allowedFields = ['idProduit', 'idCaisse', 'dateAchat'];
+    protected $allowedFields = ['idProduit', 'idCaisse', 'dateAchat', 'qtt'];
 }
