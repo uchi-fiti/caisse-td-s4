@@ -87,7 +87,11 @@
               <label for="produitSelect" class="form-label">Produit</label>
               <select class="form-select" id="produitSelect" required>
                 <option value="" selected disabled>Choisir un produit…</option>
-                <!-- options ajoutées dynamiquement depuis la liste codée en dur -->
+                <?php foreach($produits as $produit): ?>
+                  <option value="<?= esc($produit['id']) ?>" data-prix="<?= esc($produit['prix']) ?>">
+                    <?= esc($produit['designation']) ?> — <?= number_format(esc($produit['prix']), 2, ',', ' ') ?> €
+                  </option>
+                <?php endforeach; ?>
               </select>
               <div class="invalid-feedback">Merci de sélectionner un produit.</div>
             </div>
@@ -99,7 +103,7 @@
             </div>
 
             <div class="col-5 col-md-3">
-              <button type="submit" class="btn btn-primary w-100">
+              <button class="btn btn-primary w-100" id = "validateButton" >
                 <i class="bi bi-plus-circle me-1"></i> Valider
               </button>
             </div>
@@ -124,7 +128,7 @@
                 <th>Prix unitaire</th>
                 <th class="text-center">Quantité</th>
                 <th>Total</th>
-                <th class="text-end">Action</th>
+               
               </tr>
             </thead>
             <tbody id="achatsBody">
@@ -140,9 +144,11 @@
       </div>
 
       <div class="text-end">
+        <a href="/saisie/confirmer">
         <button type="button" id="btnCloturer" class="btn btn-success py-2 px-4" disabled>
           <i class="bi bi-bag-check me-1"></i> Clôturer les achats
         </button>
+        </a>
       </div>
 
     </main>
@@ -189,6 +195,101 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="app.js"></script>
+  <script>
+ 
+document.addEventListener('DOMContentLoaded', function() {
+    const validateButton = document.getElementById('validateButton');
+    const produitSelect   = document.getElementById('produitSelect');
+    const quantiteInput   = document.getElementById('quantiteInput');
+    const achatsTable     = document.getElementById('achatsTable');
+    const achatsBody      = document.getElementById('achatsBody');
+    const receiptEmpty    = document.getElementById('receiptEmpty');
+    const totalAmount     = document.getElementById('totalAmount');
+    const btnCloturer     = document.getElementById('btnCloturer');
+ 
+    function formatPrix(valeur) {
+        return Number(valeur).toLocaleString('fr-FR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + ' Ar';
+    }
+ 
+    function renderCart(cart) {
+        achatsBody.innerHTML = '';
+ 
+        if (!cart.items || cart.items.length === 0) {
+            achatsTable.classList.add('d-none');
+            receiptEmpty.classList.remove('d-none');
+            totalAmount.textContent = formatPrix(0);
+            btnCloturer.disabled = true;
+            return;
+        }
+ 
+        cart.items.forEach(function(item) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.designation}</td>
+                <td>${formatPrix(item.prix)}</td>
+                <td class="text-center">${item.quantite}</td>
+                <td>${formatPrix(item.sousTotal)}</td>
+
+            `;
+            achatsBody.appendChild(tr);
+        });
+ 
+        receiptEmpty.classList.add('d-none');
+        achatsTable.classList.remove('d-none');
+        totalAmount.textContent = formatPrix(cart.total);
+        btnCloturer.disabled = false;
+    }
+ 
+    validateButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+ 
+        const produitId = produitSelect.value;
+        const quantite = quantiteInput.value;
+ 
+        // Validation simple côté client avant l'appel réseau
+        produitSelect.classList.remove('is-invalid');
+        quantiteInput.classList.remove('is-invalid');
+ 
+        let valid = true;
+        if (!produitId) {
+            produitSelect.classList.add('is-invalid');
+            valid = false;
+        }
+        if (!quantite || Number(quantite) < 1) {
+            quantiteInput.classList.add('is-invalid');
+            valid = false;
+        }
+        if (!valid) return;
+ 
+        try {
+            const response = await fetch('/addToCart/' + produitId + '/' + quantite);
+ 
+            if (!response.ok) {
+                throw new Error('Erreur serveur (' + response.status + ')');
+            }
+ 
+            const result = await response.json();
+ 
+            if (!result.success) {
+                console.warn(result.message);
+                return;
+            }
+ 
+            renderCart(result.cart);
+ 
+            // Réinitialise le formulaire pour le produit suivant
+            produitSelect.value = '';
+            quantiteInput.value = 1;
+        } catch (error) {
+            console.error(error);
+        }
+    });
+});
+  </script>
+
 </body>
 </html>

@@ -23,6 +23,7 @@ achat(
       
 - Controller pour rediriger vers une page de saisie des achats
     - function post : prendre le numero / nom puis faire getCaisseByname
-    - rediriger vers la page avec data la caisse trouvee
+    - prendre la liste des produits
+    - rediriger vers la page avec data la caisse trouvee et les produits
 
 - Attendre le template du binome
