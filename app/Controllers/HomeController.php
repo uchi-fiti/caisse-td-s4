@@ -11,6 +11,6 @@ class HomeController extends BaseController
         $cm = new CaisseModel();
         $caisses = $cm->findAll();
 
-        return view('page', [ 'caisses' => $caisses ]);
+        return view('accueil', [ 'caisses' => $caisses ]);
     }
 }

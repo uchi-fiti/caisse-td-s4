@@ -9,8 +9,11 @@ class AchatController extends BaseController
     public function index(): string
     {
         $data = $this->request->getPost();
-        $caisseName = $data['nomCaisse'];
-        $caisse = getCaisseByName($name);
+        $name = $data['nomCaisse'];
+
+        $cm = new CaisseModel();
+
+        $caisse = $cm->getCaisseByName($name);
 
         if($caisse){
             session()->set([
@@ -21,6 +24,6 @@ class AchatController extends BaseController
             return redirect()->to('/caisse/choix');
         }
         
-        return view('page');
+        return view('saisie');
     }
 }

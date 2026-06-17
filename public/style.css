@@ -1,0 +1,444 @@
+/* ==========================================================================
+   FraisMarché — feuille de style partagée
+   Palette : #EDFDFD (fond) · #1A4033 (encre/sidebar) · #319795 (teal)
+             #2C7A7B (teal foncé / hover)
+   ========================================================================== */
+
+:root {
+  --c-bg: #EDFDFD;
+  --c-ink: #1A4033;
+  --c-teal: #319795;
+  --c-teal-dark: #2C7A7B;
+
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", "SFMono-Regular", monospace;
+
+  --sidebar-w: 268px;
+  --radius: 14px;
+}
+
+/* ---------- base ---------- */
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, .display-font {
+  font-family: var(--font-display);
+  color: var(--c-ink);
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--c-teal-dark); }
+a:hover { color: var(--c-teal); }
+
+.text-muted-ink { color: #5b7c72; }
+
+/* visible focus ring everywhere, accessibility floor */
+:focus-visible {
+  outline: 3px solid rgba(49, 151, 149, 0.45);
+  outline-offset: 2px;
+}
+
+/* ---------- buttons & form controls (rethemed to the palette) ---------- */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  border-radius: 10px;
+  padding-inline: 1.1rem;
+}
+
+.btn-primary {
+  background-color: var(--c-teal);
+  border-color: var(--c-teal);
+  color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--c-teal-dark) !important;
+  border-color: var(--c-teal-dark) !important;
+  color: #fff;
+}
+
+.btn-outline-primary {
+  color: var(--c-teal-dark);
+  border-color: var(--c-teal);
+}
+.btn-outline-primary:hover {
+  background-color: var(--c-teal);
+  border-color: var(--c-teal);
+  color: #fff;
+}
+
+.btn-success {
+  background-color: var(--c-ink);
+  border-color: var(--c-ink);
+}
+.btn-success:hover, .btn-success:focus {
+  background-color: #11302a;
+  border-color: #11302a;
+}
+
+.btn-link.btn-danger-link {
+  color: #b3413a;
+  text-decoration: none;
+}
+.btn-link.btn-danger-link:hover { color: #8a2f29; }
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border: 1.5px solid #cdeceb;
+  padding: 0.6rem 0.9rem;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--c-teal);
+  box-shadow: 0 0 0 0.2rem rgba(49, 151, 149, 0.18);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--c-ink);
+}
+
+.input-group-text {
+  background-color: #fff;
+  border: 1.5px solid #cdeceb;
+  border-right: none;
+  color: var(--c-teal-dark);
+}
+
+/* ---------- cards ---------- */
+.card {
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(26, 64, 51, 0.08);
+}
+
+.card-header-soft {
+  background-color: #e3faf9;
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom: 1px solid #d3f1ef;
+}
+
+/* ==========================================================================
+   App shell : sidebar + contenu
+   ========================================================================== */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  padding: 2.25rem clamp(1.25rem, 4vw, 3rem);
+}
+
+/* topbar mobile (visible < lg) */
+.mobile-topbar {
+  background-color: var(--c-ink);
+  color: #fff;
+  padding: 0.65rem 1rem;
+}
+.mobile-topbar .navbar-brand {
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.mobile-topbar .btn-toggle {
+  color: #fff;
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+}
+
+/* sidebar (offcanvas-lg : fixe en desktop, tiroir en mobile) */
+/* NB : Bootstrap force "background-color: transparent !important" sur
+   .offcanvas-lg à partir du breakpoint lg (pour redevenir un bloc statique).
+   On force donc le fond ici avec !important pour qu'il reste visible
+   aussi bien en desktop qu'en mobile (tiroir). */
+.app-sidebar {
+  width: var(--sidebar-w);
+  background-color: var(--c-ink) !important;
+  color: #eafaf6;
+}
+
+.app-sidebar .offcanvas-header {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-brand {
+  padding: 1.5rem 1.4rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-brand .brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--c-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.sidebar-brand .brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.12rem;
+  color: #fff;
+}
+.sidebar-brand .brand-tag {
+  font-size: 0.7rem;
+  color: #9fd8d0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sidebar-user {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.user-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #fff;
+  line-height: 1.2;
+}
+.user-role {
+  font-size: 0.76rem;
+  color: #9fd8d0;
+}
+
+.sidebar-caisse {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.caisse-label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #9fd8d0;
+  margin-bottom: 0.4rem;
+}
+.caisse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--c-teal);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+}
+.caisse-badge.is-empty {
+  background-color: rgba(255,255,255,0.08);
+  color: #cfeae5;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.sidebar-nav {
+  padding: 1rem 0.9rem;
+  flex-grow: 1;
+}
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #cfeae5;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.65rem 0.9rem;
+  border-radius: 9px;
+  margin-bottom: 0.2rem;
+}
+.sidebar-nav .nav-link i { font-size: 1.05rem; width: 1.2rem; text-align: center; }
+.sidebar-nav .nav-link:hover {
+  background-color: rgba(255,255,255,0.06);
+  color: #fff;
+}
+.sidebar-nav .nav-link.active {
+  background-color: var(--c-teal);
+  color: #fff;
+}
+
+.sidebar-footer {
+  padding: 1.1rem 1.4rem 1.4rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.logout-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #cfeae5;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.logout-link:hover { color: #fff; }
+
+/* ==========================================================================
+   Écran d'accueil — sélection de caisse
+   ========================================================================== */
+.select-caisse-card {
+  max-width: 460px;
+}
+.select-caisse-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background-color: #d8f5f2;
+  color: var(--c-teal-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+}
+
+/* ==========================================================================
+   Saisie des achats — ticket / receipt
+   ========================================================================== */
+.receipt-card {
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(26, 64, 51, 0.08);
+}
+.receipt-table {
+  margin-bottom: 0;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}
+.receipt-table thead th {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-teal-dark);
+  border-bottom: 2px dashed #cdeceb;
+  background-color: #f4fdfc;
+}
+.receipt-table td, .receipt-table th { vertical-align: middle; padding: 0.7rem 1rem; }
+.receipt-table tbody tr:not(:last-child) td { border-bottom: 1px dashed #e1f5f3; }
+
+.receipt-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #7fa49b;
+  font-family: var(--font-body);
+}
+
+.receipt-total {
+  background-color: var(--c-ink);
+  color: #fff;
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-display);
+}
+.receipt-total .amount {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #7fe6da;
+}
+
+.qty-cell { font-family: var(--font-mono); }
+
+/* ==========================================================================
+   Login
+   ========================================================================== */
+.login-shell {
+  min-height: 100vh;
+  display: flex;
+}
+.login-aside {
+  background-color: var(--c-ink);
+  color: #fff;
+  flex: 1 1 42%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+.login-aside::after {
+  content: "";
+  position: absolute;
+  right: -90px;
+  bottom: -90px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background-color: rgba(49, 151, 149, 0.28);
+}
+.login-aside::before {
+  content: "";
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: rgba(49, 151, 149, 0.18);
+}
+.login-aside .brand-icon-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background-color: var(--c-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+.login-aside h1 { color: #fff; font-size: 2rem; max-width: 380px; position: relative; z-index: 1; }
+.login-aside p { color: #b7e3dc; max-width: 380px; position: relative; z-index: 1; }
+
+.login-form-wrap {
+  flex: 1 1 58%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--c-bg);
+}
+.login-form-card { width: 100%; max-width: 400px; }
+
+@media (max-width: 991.98px) {
+  .login-aside { display: none; }
+}
